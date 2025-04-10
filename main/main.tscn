@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://dltbsys7uqk4w"]
+
+[ext_resource type="Script" uid="uid://d1kgt6ogtpocl" path="res://navdi/navdisoleplayerholder.gd" id="1_53q0u"]
+[ext_resource type="Script" uid="uid://bub0sbcw8311u" path="res://main/main.gd" id="1_pjrb6"]
+[ext_resource type="PackedScene" uid="uid://dweg2hsx8v2rl" path="res://00-debtonator/00-debt.tscn" id="2_xwkvk"]
+
+[node name="main" type="Node2D" node_paths=PackedStringArray("game_holder", "camera")]
+texture_filter = 1
+script = ExtResource("1_pjrb6")
+first_stage = ExtResource("2_xwkvk")
+game_holder = NodePath("game_holder")
+camera = NodePath("Camera2D")
+
+[node name="game_holder" type="Node2D" parent="."]
+
+[node name="player_holder" type="Node2D" parent="."]
+script = ExtResource("1_53q0u")
+metadata/_custom_type_script = "uid://d1kgt6ogtpocl"
+
+[node name="Camera2D" type="Camera2D" parent="."]

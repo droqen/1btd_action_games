@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="Sheet" load_steps=3 format=3 uid="uid://bubk4fqq5rivc"]
+
+[ext_resource type="Script" uid="uid://byun6mt7c4fun" path="res://navdi/navdisheet.gd" id="1_fsy4d"]
+[ext_resource type="Texture2D" uid="uid://u50j8gqcfumf" path="res://00-debtonator/debt.png" id="2_mngoj"]
+
+[resource]
+script = ExtResource("1_fsy4d")
+texture = ExtResource("2_mngoj")
+hframes = 10
+vframes = 10
+defaultframe = 0
+metadata/_custom_type_script = "uid://byun6mt7c4fun"

@@ -1,0 +1,59 @@
+[gd_scene load_steps=10 format=4 uid="uid://dweg2hsx8v2rl"]
+
+[ext_resource type="Script" uid="uid://t488fpcs7flw" path="res://main/game_stage.gd" id="1_667wf"]
+[ext_resource type="TileSet" uid="uid://bd31bpweupak7" path="res://00-debtonator/debt_tiles.tres" id="2_prbxx"]
+[ext_resource type="Script" uid="uid://bqd058komyl30" path="res://navdi/maze.gd" id="3_xivld"]
+[ext_resource type="Script" uid="uid://bg16003dt338d" path="res://00-debtonator/debtplayer.gd" id="4_u0kwt"]
+[ext_resource type="Script" uid="uid://di2t14yakk4ot" path="res://navdi/navdisheetsprite.gd" id="5_u3pbw"]
+[ext_resource type="Texture2D" uid="uid://u50j8gqcfumf" path="res://00-debtonator/debt.png" id="5_xsfbb"]
+[ext_resource type="Script" uid="uid://tt1ag5ksilr0" path="res://navdi/navdibodymover.gd" id="6_xsfbb"]
+[ext_resource type="Resource" uid="uid://bubk4fqq5rivc" path="res://00-debtonator/debt_sheet.tres" id="7_w73b7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w73b7"]
+size = Vector2(5.9, 3.9)
+
+[node name="00-debt" type="Node2D"]
+script = ExtResource("1_667wf")
+
+[node name="Maze" type="TileMapLayer" parent="."]
+tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAUAAAABAAAAAAAAAAYAAAABAAAAAAAAAAcAAAABAAAAAAAAAAgAAAAAAAAAAAAAAAkAAAAAAAAAAAABAAAAAAAAAAAAAAABAAEAAAAAAAAAAAABAAIAAAAAAAAAAAABAAMAAAAAAAAAAAABAAQAAAAAAAAAAAABAAUAAAAAAAAAAAABAAYAAAAAAAAAAAABAAcAAAABAAAAAAABAAgAAAABAAAAAAABAAkAAAAAAAAAAAACAAAAAAAAAAAAAAACAAEAAAAAAAAAAAACAAIAAAAAAAAAAAACAAMAAAAAAAAAAAACAAQAAAAAAAAAAAACAAUAAAAAAAAAAAACAAYAAAAAAAAAAAACAAcAAAAAAAAAAAACAAgAAAABAAAAAAACAAkAAAAAAAAAAAADAAAAAAAAAAAAAAADAAEAAAAAAAAAAAADAAIAAAAAAAAAAAADAAMAAAAAAAAAAAADAAQAAAAAAAAAAAADAAUAAAAAAAAAAAADAAYAAAAAAAAAAAADAAcAAAAAAAAAAAADAAgAAAABAAAAAAADAAkAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAEAAAAAAAAAAAAEAAIAAAAAAAAAAAAEAAMAAAAAAAAAAAAEAAQAAAAAAAAAAAAEAAUAAAAAAAAAAAAEAAYAAAAAAAAAAAAEAAcAAAABAAAAAAAEAAgAAAABAAAAAAAEAAkAAAAAAAAAAAAFAAAAAAAAAAAAAAAFAAEAAAAAAAAAAAAFAAIAAAAAAAAAAAAFAAMAAAAAAAAAAAAFAAQAAAAAAAAAAAAFAAUAAAAAAAAAAAAFAAYAAAAAAAAAAAAFAAcAAAABAAAAAAAFAAgAAAABAAAAAAAFAAkAAAABAAAAAAAGAAAAAAAAAAAAAAAGAAEAAAAAAAAAAAAGAAIAAAAAAAAAAAAGAAMAAAAAAAAAAAAGAAQAAAAAAAAAAAAGAAUAAAAAAAAAAAAGAAYAAAAAAAAAAAAGAAcAAAAAAAAAAAAGAAgAAAAAAAAAAAAGAAkAAAAAAAAAAAAHAAAAAAAAAAAAAAAHAAEAAAAAAAAAAAAHAAIAAAAAAAAAAAAHAAMAAAAAAAAAAAAHAAQAAAAAAAAAAAAHAAUAAAAAAAAAAAAHAAYAAAAAAAAAAAAHAAcAAAAAAAAAAAAHAAgAAAAAAAAAAAAHAAkAAAAAAAAAAAAIAAAAAAAAAAAAAAAIAAEAAAAAAAAAAAAIAAIAAAAAAAAAAAAIAAMAAAAAAAAAAAAIAAQAAAAAAAAAAAAIAAUAAAAAAAAAAAAIAAYAAAAAAAAAAAAIAAcAAAAAAAAAAAAIAAgAAAAAAAAAAAAIAAkAAAAAAAAAAAAJAAAAAAAAAAAAAAAJAAEAAAAAAAAAAAAJAAIAAAAAAAAAAAAJAAMAAAAAAAAAAAAJAAQAAAAAAAAAAAAJAAUAAAAAAAAAAAAJAAYAAAAAAAAAAAAJAAcAAAAAAAAAAAAJAAgAAAAAAAAAAAAJAAkAAAAAAAAAAAA=")
+tile_set = ExtResource("2_prbxx")
+navigation_enabled = false
+script = ExtResource("3_xivld")
+metadata/_custom_type_script = "uid://bqd058komyl30"
+
+[node name="debtplayer" type="Node2D" parent="."]
+position = Vector2(56, 61)
+script = ExtResource("4_u0kwt")
+
+[node name="SheetSprite" type="Sprite2D" parent="debtplayer"]
+position = Vector2(0, -2)
+texture = ExtResource("5_xsfbb")
+hframes = 10
+vframes = 10
+frame = 10
+script = ExtResource("5_u3pbw")
+sheet = ExtResource("7_w73b7")
+frames = PackedInt32Array(10)
+metadata/_custom_type_script = "uid://di2t14yakk4ot"
+
+[node name="NavdiBodyMover" type="Node2D" parent="debtplayer"]
+script = ExtResource("6_xsfbb")
+metadata/_custom_type_script = "uid://tt1ag5ksilr0"
+
+[node name="ShapeCast2D" type="ShapeCast2D" parent="debtplayer/NavdiBodyMover"]
+shape = SubResource("RectangleShape2D_w73b7")
+target_position = Vector2(0, 0)
+
+[node name="mid" type="Node2D" parent="debtplayer"]
+
+[node name="wandspr" type="Sprite2D" parent="debtplayer/mid"]
+position = Vector2(5, -2)
+texture = ExtResource("5_xsfbb")
+hframes = 10
+vframes = 10
+frame = 17
+script = ExtResource("5_u3pbw")
+sheet = ExtResource("7_w73b7")
+frames = PackedInt32Array(17)
+metadata/_custom_type_script = "uid://di2t14yakk4ot"
