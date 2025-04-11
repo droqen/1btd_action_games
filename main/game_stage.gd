@@ -1,6 +1,10 @@
 @tool
 extends Node2D
 class_name GameStage
+static var current_stage : GameStage
+
+signal game_overed(gostate)
+
 @export var width : int = 100
 @export var height : int = 100
 @export var border_colour : Color = Color(1,0,1,1)

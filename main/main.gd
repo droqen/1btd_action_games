@@ -1,6 +1,7 @@
 extends Node2D
 
 @export var first_stage : PackedScene
+@export var next_stage : PackedScene
 @export var game_holder : Node2D
 @export var camera : Camera2D
 var stage : GameStage
@@ -27,4 +28,18 @@ func set_stage(stage : GameStage) -> void:
 		game_holder.add_child(stage)
 		stage.owner = owner if owner else self
 	self.stage = stage
+	if GameStage.current_stage:
+		GameStage.current_stage.game_overed.disconnect(_on_stage_game_overed)
+	GameStage.current_stage = stage
+	GameStage.current_stage.game_overed.connect(_on_stage_game_overed)
 	update_stage_size()
+
+func _on_stage_game_overed(gostate) -> void:
+	print("game over @",gostate)
+	match gostate:
+		ERR_LINK_FAILED:
+			NavdiSolePlayer.GetPlayer(self).name = "dead"
+			set_stage(first_stage.instantiate())
+		ERR_CANT_ACQUIRE_RESOURCE:
+			NavdiSolePlayer.GetPlayer(self).name = "winner winner chicken player"
+			set_stage(next_stage.instantiate())

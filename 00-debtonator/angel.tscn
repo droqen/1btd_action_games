@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://56jvdp6gupki"]
+
+[ext_resource type="Script" uid="uid://c8golj7ca70y5" path="res://00-debtonator/angel.gd" id="1_ie6c8"]
+[ext_resource type="Texture2D" uid="uid://u50j8gqcfumf" path="res://00-debtonator/debt.png" id="2_ui8pa"]
+[ext_resource type="Script" uid="uid://di2t14yakk4ot" path="res://navdi/navdisheetsprite.gd" id="3_rgcgj"]
+[ext_resource type="Resource" uid="uid://bubk4fqq5rivc" path="res://00-debtonator/debt_sheet.tres" id="4_4kip4"]
+
+[node name="angel" type="Node2D"]
+script = ExtResource("1_ie6c8")
+
+[node name="SheetSprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_ui8pa")
+hframes = 10
+vframes = 10
+frame = 25
+script = ExtResource("3_rgcgj")
+sheet = ExtResource("4_4kip4")
+frames = PackedInt32Array(24, 25)
+ani_period = 25
+ani_index = 1
+metadata/_custom_type_script = "uid://di2t14yakk4ot"

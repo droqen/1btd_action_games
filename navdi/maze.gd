@@ -92,3 +92,28 @@ func magic_wand(start : Vector2i, verifier : Callable) -> Array[Vector2i]:
 			else: excluded_cells.append(cell2)
 		i += 1
 	return cells
+
+func astar(walkable_tids : Array[int], connect_diagonals : bool = true) -> AStar2D:
+	var astar : AStar2D = AStar2D.new()
+	var points : Dictionary
+	var i = 0
+	for cell in get_used_cells_by_tids(walkable_tids):
+		astar.add_point(i, Vector2(cell.x,cell.y))
+		points[_c2ind(cell)] = i
+		i += 1
+	for cell in get_used_cells_by_tids(walkable_tids):
+		var upfree : bool = _c2ind(cell, 0,-1) in points
+		var rtfree : bool = _c2ind(cell, 1, 0) in points
+		if upfree: astar.connect_points(points[_c2ind(cell)], points[_c2ind(cell, 0,-1)])
+		if rtfree: astar.connect_points(points[_c2ind(cell)], points[_c2ind(cell, 1, 0)])
+		#if dnfree: astar.connect_points(points[_c2ind(cell)], points[_c2ind(cell, 0, 1)])
+		if connect_diagonals and rtfree:
+			var dnfree : bool = _c2ind(cell, 0, 1) in points
+			if upfree and _c2ind(cell, 1,-1) in points:
+				astar.connect_points(points[_c2ind(cell)], points[_c2ind(cell, 1,-1)])
+			if dnfree and _c2ind(cell, 1, 1) in points:
+				astar.connect_points(points[_c2ind(cell)], points[_c2ind(cell, 1, 1)])
+	return astar
+
+func _c2ind(cell:Vector2i,dx:int=0,dy:int=0) -> int:
+	return (cell.x+dx)+(cell.y+dy)*1000
