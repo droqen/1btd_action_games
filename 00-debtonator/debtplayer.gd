@@ -1,5 +1,7 @@
 extends NavdiSolePlayer
 
+signal lasered(tile_affected_count : int)
+
 var ate : bool = false
 var atedur : int = 0
 var vel : Vector2
@@ -24,7 +26,8 @@ func _physics_process(_delta: float) -> void:
 		atedur += 1
 		spr.setup([19])
 		if atedur > 10 and Pin.get_action_hit():
-			hide(); GameStage.current_stage.game_overed.emit(ERR_LINK_FAILED)
+			atedur = -100
+			GameStage.current_stage.game_overed.emit(ERR_LINK_FAILED)
 		return
 		# ur ded
 		
@@ -32,33 +35,50 @@ func _physics_process(_delta: float) -> void:
 	var actnow : bool = Pin.get_action_hit()
 	var acting : bool = Pin.get_action_held()
 	
-	if acting: dpad *= 0
-	casting = acting
+	if actnow: casting = true
+	if !acting: casting = false
+	if casting: dpad *= 0
 	$CPUParticles2D.emitting = casting
 	if cast_cooldown > 0: cast_cooldown -= 1
 	if casting and cast_cooldown <= 0 and maze:
 		cast_cooldown = 20
 		var cell : Vector2i = maze.local_to_map(position)
+		var reveals : int = 0
+		var flickers : int = 0
 		for dx in [-1,0,1]:
 			for dy in [-1,0,1]:
 				if (dx==0)!=(dy==0):
 					for i in range(1,40):
 						var cell2 : Vector2i = cell+i*Vector2i(dx,dy)
 						match maze.get_cell_tid(cell2):
-							0:
-								reveal(cell2)
-							4,5,6:
-								flicker(cell2)
+							0, 40:
+								reveal(cell2); reveals += 1;
+							4,5,6, 44,45,46:
+								flicker(cell2); flickers += 1;
 							_:
 								break
+		if reveals > 0:
+			lasered.emit(reveals)
+		elif flickers > 0:
+			lasered.emit(0)
 	
 	if maze:
 		var cell : Vector2i = maze.local_to_map(position)
-		if maze.get_cell_tile_data(cell).get_collision_polygons_count(0)>0:
-			cell.y += 1
+		#var celldata = maze.get_cell_tile_data(cell)
+		#if celldata and get_collision_polygons_count(0)>0:
+			#cell.y += 1
 		if cell != lastcell:
 			lastcell = cell
-			flicker(cell)
+			if maze.get_cell_tid(cell) == 0:
+				$blepmini.volume_db = -5
+				$blepmini.pitch_scale = randf_range(0.8,1.2)
+				$blepmini.play()
+				flicker(cell)
+			elif maze.get_cell_tid(cell) == 40:
+				$blepmini.volume_db = -4
+				$blepmini.pitch_scale = randf_range(1.2,1.6)
+				$blepmini.play()
+				flicker(cell)
 			#maze.set_cell_tid(cell, 4)
 		var tocenter : Vector2 = maze.map_to_center(cell) - position
 		if casting:
@@ -87,20 +107,26 @@ func _physics_process(_delta: float) -> void:
 	else: spr.setup([12])
 
 func flicker(targetcell:Vector2i) -> void:
+	var plus : int = 0
+	if maze.get_cell_tid(targetcell)>=40: plus = 40
 	var maze = self.maze
-	maze.set_cell_tid(targetcell,6)
+	maze.set_cell_tid(targetcell,6+plus)
 	await get_tree().create_timer(0.1*randf()).timeout
 	if!is_instance_valid(maze): return
-	maze.set_cell_tid(targetcell,4)
+	maze.set_cell_tid(targetcell,4+plus)
 func reveal(targetcell:Vector2i) -> void:
+	var plus : int = 0
+	if maze.get_cell_tid(targetcell)>=40: plus = 40
 	var maze = self.maze
-	maze.set_cell_tid(targetcell,6)
+	maze.set_cell_tid(targetcell,6+plus)
 	await get_tree().create_timer(0.1).timeout
 	if!is_instance_valid(maze): return
-	maze.set_cell_tid(targetcell,5)
+	maze.set_cell_tid(targetcell,5+plus)
 	await get_tree().create_timer(0.1).timeout
 	if!is_instance_valid(maze): return
-	maze.set_cell_tid(targetcell,4)
+	maze.set_cell_tid(targetcell,4+plus)
 func get_ate() -> void:
-	ate = true
+	if !ate:
+		ate = true
+		GameStage.current_stage.playerdead = true
 	

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dchwvu1glw77a"
+path="res://.godot/imported/DEBT-BLEP (2).mp3-ffde7ae7424126f01988d99b17f2f63d.mp3str"
+
+[deps]
+
+source_file="res://00-debtonator/music/DEBT-BLEP (2).mp3"
+dest_files=["res://.godot/imported/DEBT-BLEP (2).mp3-ffde7ae7424126f01988d99b17f2f63d.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -1,0 +1,46 @@
+[gd_scene load_steps=8 format=4 uid="uid://dedihpstj752"]
+
+[ext_resource type="Script" uid="uid://t488fpcs7flw" path="res://main/game_stage.gd" id="1_y1xsl"]
+[ext_resource type="TileSet" uid="uid://bd31bpweupak7" path="res://00-debtonator/debt_tiles.tres" id="2_uldto"]
+[ext_resource type="Script" uid="uid://bqd058komyl30" path="res://navdi/maze.gd" id="3_q7sfs"]
+[ext_resource type="PackedScene" uid="uid://bxa284er1ltk" path="res://00-debtonator/debtplayer.tscn" id="4_jpixf"]
+[ext_resource type="FontFile" uid="uid://cgd27m3vqxk8m" path="res://fonts/oubliettescrawl.ttf" id="5_xbasu"]
+[ext_resource type="Script" uid="uid://doo4igbuieqv" path="res://00-debtonator/^tilechecker.gd" id="6_cb7l5"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_tl1eu"]
+line_spacing = -3.0
+font = ExtResource("5_xbasu")
+font_color = Color(0.721569, 0.262745, 0.498039, 1)
+
+[node name="DEBTONATOR_LEVEL" type="Node2D"]
+texture_filter = 1
+script = ExtResource("1_y1xsl")
+width = 250
+height = 150
+
+[node name="Maze" type="TileMapLayer" parent="."]
+position = Vector2(-1, 0)
+tile_map_data = PackedByteArray("AADf/yQAAAABAAAAAADg/yQAAAABAAAAAADh/yQAAAABAAAAAADh/yUAAAABAAAAAADh/yYAAAABAAAAAADg/yYAAAABAAAAAADf/yYAAAABAAAAAADf/yUAAAABAAAAAADe/yUAAAAAAAAAAAA=")
+tile_set = ExtResource("2_uldto")
+navigation_enabled = false
+script = ExtResource("3_q7sfs")
+metadata/_custom_type_script = "uid://bqd058komyl30"
+
+[node name="debtplayer" parent="." instance=ExtResource("4_jpixf")]
+position = Vector2(-317, 375)
+
+[node name="Label2" type="Label" parent="debtplayer"]
+offset_left = 375.0
+offset_top = -308.0
+offset_right = 513.0
+offset_bottom = -265.0
+text = "game over."
+label_settings = SubResource("LabelSettings_tl1eu")
+horizontal_alignment = 1
+
+[node name="^tilechecker" type="Node" parent="." node_paths=PackedStringArray("maze", "enemies")]
+script = ExtResource("6_cb7l5")
+maze = NodePath("../Maze")
+enemies = NodePath("../enemies")
+
+[node name="enemies" type="Node2D" parent="."]

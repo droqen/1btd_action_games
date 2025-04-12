@@ -13,11 +13,19 @@ config_version=5
 config/name="1btd-ACTION"
 run/main_scene="uid://dltbsys7uqk4w"
 config/features=PackedStringArray("4.4", "GL Compatibility")
+boot_splash/bg_color=Color(1, 1, 1, 1)
+boot_splash/fullsize=false
+boot_splash/image="uid://dlkwtk0p6jgnl"
 config/icon="res://icon.svg"
 
 [autoload]
 
 Pin="*res://navdi/navdipin.gd"
+PokiSDK="*res://addons/poki-sdk/pokisdk.gd"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/poki-sdk/plugin.cfg")
 
 [input]
 
@@ -68,3 +76,4 @@ jump={
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(1, 1, 1, 1)

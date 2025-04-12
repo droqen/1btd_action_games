@@ -4,6 +4,14 @@ class_name GameStage
 static var current_stage : GameStage
 
 signal game_overed(gostate)
+signal lasered(tct)
+
+var gamerunning : bool = false
+var playerdead : bool = false
+
+func _ready() -> void:
+	await get_tree().physics_frame
+	NavdiSolePlayer.GetPlayer(self).lasered.connect(func(tct):lasered.emit(tct))
 
 @export var width : int = 100
 @export var height : int = 100

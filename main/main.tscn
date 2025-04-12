@@ -1,15 +1,36 @@
-[gd_scene load_steps=5 format=3 uid="uid://dltbsys7uqk4w"]
+[gd_scene load_steps=19 format=3 uid="uid://dltbsys7uqk4w"]
 
+[ext_resource type="Shader" uid="uid://ve50xs0sfsvh" path="res://main/gausblur.gdshader" id="1_3wy1v"]
 [ext_resource type="Script" uid="uid://d1kgt6ogtpocl" path="res://navdi/navdisoleplayerholder.gd" id="1_53q0u"]
 [ext_resource type="Script" uid="uid://bub0sbcw8311u" path="res://main/main.gd" id="1_pjrb6"]
 [ext_resource type="PackedScene" uid="uid://lbinfpfcaohw" path="res://00-debtonator/levels/pac_level.tscn" id="2_c651c"]
-[ext_resource type="PackedScene" uid="uid://dweg2hsx8v2rl" path="res://00-debtonator/00-debt.tscn" id="2_xwkvk"]
+[ext_resource type="PackedScene" uid="uid://dxcf37hmds0nh" path="res://00-debtonator/levels/laser_level.tscn" id="4_3wy1v"]
+[ext_resource type="PackedScene" uid="uid://cxv20btumgbnh" path="res://00-debtonator/levels/laser2_level.tscn" id="5_0i4oc"]
+[ext_resource type="AudioStream" uid="uid://dynxv208ycmjb" path="res://00-debtonator/music/DEBT-LOOP.mp3" id="6_4dugh"]
+[ext_resource type="PackedScene" uid="uid://cp8ldpuuqa1vw" path="res://00-debtonator/levels/green_level.tscn" id="6_fwcvl"]
+[ext_resource type="AudioStream" uid="uid://c0d7ohmxrdmc8" path="res://00-debtonator/music/DEBT-WIN.mp3" id="7_67ri8"]
+[ext_resource type="PackedScene" uid="uid://b8ru4q0st17h3" path="res://00-debtonator/levels/green2_level.tscn" id="7_na0o7"]
+[ext_resource type="AudioStream" uid="uid://cdk3cn0y356vw" path="res://00-debtonator/music/DEBT-DEAD.mp3" id="8_67ri8"]
+[ext_resource type="PackedScene" uid="uid://cjcqq43u7bsyc" path="res://00-debtonator/levels/green3_level.tscn" id="8_73k8k"]
+[ext_resource type="AudioStream" uid="uid://bwh6sbwqccrof" path="res://00-debtonator/music/DEBT-LOOP2.mp3" id="8_bsumw"]
+[ext_resource type="AudioStream" uid="uid://dchwvu1glw77a" path="res://00-debtonator/music/DEBT-BLEP (2).mp3" id="9_grrlh"]
+[ext_resource type="PackedScene" uid="uid://d1524spgoym6l" path="res://00-debtonator/levels/laser3_level.tscn" id="9_n3o0a"]
+[ext_resource type="PackedScene" uid="uid://dedihpstj752" path="res://00-debtonator/levels/end_level.tscn" id="10_s758e"]
+[ext_resource type="Script" uid="uid://dh2yxdgm2pk4" path="res://main/onscreen_controls.gd" id="17_s758e"]
 
-[node name="main" type="Node2D" node_paths=PackedStringArray("game_holder", "camera")]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kfbq2"]
+shader = ExtResource("1_3wy1v")
+shader_parameter/strength = 1.161
+shader_parameter/sample_power = 4
+shader_parameter/whiteout = 0.0
+shader_parameter/is_canvas_group = true
+
+[node name="main" type="CanvasGroup" node_paths=PackedStringArray("game_holder", "camera")]
 texture_filter = 1
+material = SubResource("ShaderMaterial_kfbq2")
 script = ExtResource("1_pjrb6")
-first_stage = ExtResource("2_c651c")
-next_stage = ExtResource("2_xwkvk")
+stages = Array[PackedScene]([ExtResource("2_c651c"), ExtResource("4_3wy1v"), ExtResource("5_0i4oc"), ExtResource("6_fwcvl"), ExtResource("7_na0o7"), ExtResource("8_73k8k"), ExtResource("9_n3o0a"), ExtResource("10_s758e")])
+stage_index = 0
 game_holder = NodePath("game_holder")
 camera = NodePath("Camera2D")
 
@@ -20,3 +41,48 @@ script = ExtResource("1_53q0u")
 metadata/_custom_type_script = "uid://d1kgt6ogtpocl"
 
 [node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="loop" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_4dugh")
+
+[node name="loop2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_bsumw")
+
+[node name="win" type="AudioStreamPlayer" parent="."]
+process_mode = 3
+stream = ExtResource("7_67ri8")
+
+[node name="dead" type="AudioStreamPlayer" parent="."]
+process_mode = 3
+stream = ExtResource("8_67ri8")
+
+[node name="blep" type="AudioStreamPlayer" parent="."]
+process_mode = 3
+stream = ExtResource("9_grrlh")
+pitch_scale = 2.15
+bus = &"EchoSfx"
+
+[node name="onscreen_controls" type="Control" parent="."]
+visible = false
+layout_mode = 3
+offset_right = 100.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("17_s758e")
+
+[node name="MarginContainer" type="MarginContainer" parent="onscreen_controls"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="ColorRect" type="ColorRect" parent="onscreen_controls/MarginContainer"]
+layout_mode = 2
+color = Color(0.943258, 0.918417, 0.86474, 0.294118)

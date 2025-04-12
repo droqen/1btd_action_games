@@ -19,16 +19,19 @@ func _physics_process(_delta: float) -> void:
 	if maze == null:
 		if GameStage.current_stage:
 			maze = GameStage.current_stage.get_node("Maze")
-			astar = maze.astar([0,4,5,6,2,3])
+			astar = maze.astar([0,4,5,6,2,3, 40,43,44,45,46])
 		else:
 			return
 	elif player == null:
-		if NavdiSolePlayer.GetPlayer(self).vel != Vector2.ZERO:
-			player = NavdiSolePlayer.GetPlayer(self)
+		player = NavdiSolePlayer.GetPlayer(self)
+		if player.vel == Vector2.ZERO and not player.casting:
+			player = null # forget the player while idle
+		else:
+			GameStage.current_stage.gamerunning = true
 		spr.setup([20])
 	else:
 		var cell = maze.local_to_map(position)
-		if maze.get_cell_tid(cell) == 5: stunned = 100; angry = 0;
+		if maze.get_cell_tid(cell)%40 == 5: stunned = 100; angry = 0;
 		if stunned > 0:
 			stunned -= 1
 			if stunned < 25:
@@ -65,8 +68,8 @@ func _physics_process(_delta: float) -> void:
 				else: angry = 100
 				targetvel = $playerlooker.target_position.limit_length(movespeed)
 			else:
-				if player.vel == Vector2.ZERO:
-					movespeed -= 0.55
+				#if player.vel == Vector2.ZERO:
+					#movespeed -= 0.55
 				
 				if angry > 0: angry -= 2
 				else: angry = 0
